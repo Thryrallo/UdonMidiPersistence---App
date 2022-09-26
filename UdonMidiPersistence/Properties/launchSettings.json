@@ -1,0 +1,11 @@
+{
+  "profiles": {
+    "VRChat": {
+      "commandName": "Project"
+    },
+    "Unity": {
+      "commandName": "Project",
+      "commandLineArgs": "\"C:\\\\Users\\\\Thry 2 electric boog\\\\AppData\\\\Local\\\\Unity\\\\Editor\\\\Editor.log\""
+    }
+  }
+}

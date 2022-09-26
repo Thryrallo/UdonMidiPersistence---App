@@ -1,0 +1,44 @@
+{
+  "$type": "System.Collections.Generic.Dictionary`2[[System.String, System.Private.CoreLib],[System.Collections.Generic.Dictionary`2[[System.String, System.Private.CoreLib],[System.Object, System.Private.CoreLib]], System.Private.CoreLib]], System.Private.CoreLib",
+  "TestWrld": {
+    "$type": "System.Collections.Generic.Dictionary`2[[System.String, System.Private.CoreLib],[System.Object, System.Private.CoreLib]], System.Private.CoreLib",
+    "Canvas:StringToSave": "Hello World",
+    "Canvas:FloatToSave": 0.5,
+    "Canvas:IntToSave": 5,
+    "Examples:StringToSave": "midi persit 2",
+    "Examples:IntToSave": 18,
+    "Examples:FloatToSave": 0.252588,
+    "Synced Cube:Position": {
+      "$type": "UdonMidiPersistence.Program+Vector3, UdonMidiPersistence",
+      "x": 3.5,
+      "y": 1.4,
+      "z": 0.3
+    },
+    "Synced Cube:Rotation": {
+      "$type": "UdonMidiPersistence.Program+Vector3, UdonMidiPersistence",
+      "x": 356.0,
+      "y": 114.2,
+      "z": 356.6
+    }
+  },
+  "TestingCrossWorldIdentifier": {
+    "$type": "System.Collections.Generic.Dictionary`2[[System.String, System.Private.CoreLib],[System.Object, System.Private.CoreLib]], System.Private.CoreLib",
+    "Synced CrossWorldText:SavedString": "test"
+  },
+  "TestWrld2": {
+    "$type": "System.Collections.Generic.Dictionary`2[[System.String, System.Private.CoreLib],[System.Object, System.Private.CoreLib]], System.Private.CoreLib",
+    "Synced Cube:Position": {
+      "x": 2.3,
+      "y": 1.5,
+      "z": 4.9
+    },
+    "Synced Cube:Rotation": {
+      "x": 355.1,
+      "y": 137.1,
+      "z": 335.6
+    },
+    "Examples:StringToSave": "",
+    "Examples:IntToSave": 0,
+    "Examples:FloatToSave": 0.0
+  }
+}

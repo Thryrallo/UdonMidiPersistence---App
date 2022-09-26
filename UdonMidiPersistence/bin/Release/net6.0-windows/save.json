@@ -1,0 +1,9 @@
+{
+  "$type": "System.Collections.Generic.Dictionary`2[[System.String, System.Private.CoreLib],[System.Collections.Generic.Dictionary`2[[System.String, System.Private.CoreLib],[System.Object, System.Private.CoreLib]], System.Private.CoreLib]], System.Private.CoreLib",
+  "TestWrld": {
+    "$type": "System.Collections.Generic.Dictionary`2[[System.String, System.Private.CoreLib],[System.Object, System.Private.CoreLib]], System.Private.CoreLib",
+    "Examples:StringToSave": "midi persit 2",
+    "Examples:FloatToSave": 0.252588,
+    "Examples:IntToSave": 18
+  }
+}

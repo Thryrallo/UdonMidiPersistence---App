@@ -12,9 +12,10 @@
       }
     ],
     "additionalProbingPaths": [
-      "C:\\Users\\Thry 2 electric boog\\.dotnet\\store\\|arch|\\|tfm|",
-      "C:\\Users\\Thry 2 electric boog\\.nuget\\packages",
-      "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
+      "C:\\Users\\yanni\\.dotnet\\store\\|arch|\\|tfm|",
+      "C:\\Users\\yanni\\.nuget\\packages",
+      "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages",
+      "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
     ],
     "configProperties": {
       "System.Reflection.Metadata.MetadataUpdater.IsSupported": false,

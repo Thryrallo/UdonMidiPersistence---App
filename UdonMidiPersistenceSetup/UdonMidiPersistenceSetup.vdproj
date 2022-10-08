@@ -21,7 +21,13 @@
         }
         "Entry"
         {
-        "MsmKey" = "8:_C93FDAB0E33B4B8E80E8FA9F08A18BA6"
+        "MsmKey" = "8:_9814698BDA634158B24DA54B770F67A0"
+        "OwnerKey" = "8:_UNDEFINED"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_FB42D2A708A3402095333C585BF3DAF5"
         "OwnerKey" = "8:_UNDEFINED"
         "MsmSig" = "8:_UNDEFINED"
         }
@@ -43,13 +49,29 @@
         "PrivateKeyFile" = "8:"
         "TimeStampServer" = "8:"
         "InstallerBootstrapper" = "3:2"
+            "BootstrapperCfg:{63ACBE69-63AA-4F98-B2B6-99F9E24495F2}"
+            {
+            "Enabled" = "11:TRUE"
+            "PromptEnabled" = "11:TRUE"
+            "PrerequisitesLocation" = "2:1"
+            "Url" = "8:"
+            "ComponentsUrl" = "8:"
+                "Items"
+                {
+                    "{EDC2488A-8267-493A-A98E-7D9C3B36CDF3}:.NETFramework,Version=v4.7.2"
+                    {
+                    "Name" = "8:Microsoft .NET Framework 4.7.2 (x86 and x64)"
+                    "ProductCode" = "8:.NETFramework,Version=v4.7.2"
+                    }
+                }
+            }
         }
         "Release"
         {
         "DisplayName" = "8:Release"
         "IsDebugOnly" = "11:FALSE"
         "IsReleaseOnly" = "11:TRUE"
-        "OutputFilename" = "8:Release\\UdonMidiPersistenceSetup.msi"
+        "OutputFilename" = "8:Release\\VRChatMidiPersistenceSetup.msi"
         "PackageFilesAs" = "3:2"
         "PackageFileSize" = "3:-2147483648"
         "CabType" = "3:1"
@@ -59,6 +81,22 @@
         "PrivateKeyFile" = "8:"
         "TimeStampServer" = "8:"
         "InstallerBootstrapper" = "3:2"
+            "BootstrapperCfg:{63ACBE69-63AA-4F98-B2B6-99F9E24495F2}"
+            {
+            "Enabled" = "11:TRUE"
+            "PromptEnabled" = "11:TRUE"
+            "PrerequisitesLocation" = "2:1"
+            "Url" = "8:"
+            "ComponentsUrl" = "8:"
+                "Items"
+                {
+                    "{EDC2488A-8267-493A-A98E-7D9C3B36CDF3}:.NETFramework,Version=v4.7.2"
+                    {
+                    "Name" = "8:Microsoft .NET Framework 4.7.2 (x86 and x64)"
+                    "ProductCode" = "8:.NETFramework,Version=v4.7.2"
+                    }
+                }
+            }
         }
     }
     "Deployable"
@@ -94,6 +132,46 @@
             {
             "SourcePath" = "8:..\\UdonMidiPersistence\\twoways.ico"
             "TargetName" = "8:twoways.ico"
+            "Tag" = "8:"
+            "Folder" = "8:_A8477C6EE2124440BBCC3C395A9E3C4B"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:FALSE"
+            "IsolateTo" = "8:"
+            }
+            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_9814698BDA634158B24DA54B770F67A0"
+            {
+            "SourcePath" = "8:..\\UdonMidiPersistence\\publish\\win-x86\\UdonMidiPersistence.pdb"
+            "TargetName" = "8:UdonMidiPersistence.pdb"
+            "Tag" = "8:"
+            "Folder" = "8:_A8477C6EE2124440BBCC3C395A9E3C4B"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:FALSE"
+            "IsolateTo" = "8:"
+            }
+            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_FB42D2A708A3402095333C585BF3DAF5"
+            {
+            "SourcePath" = "8:..\\UdonMidiPersistence\\publish\\win-x86\\UdonMidiPersistence.exe"
+            "TargetName" = "8:UdonMidiPersistence.exe"
             "Tag" = "8:"
             "Folder" = "8:_A8477C6EE2124440BBCC3C395A9E3C4B"
             "Condition" = "8:"
@@ -165,9 +243,9 @@
         "Product"
         {
         "Name" = "8:Microsoft Visual Studio"
-        "ProductName" = "8:UdonMidiPersistence"
+        "ProductName" = "8:VRChatMidiPersistence"
         "ProductCode" = "8:{8E6EC5CB-F7E7-426B-9127-C31F4BD23361}"
-        "PackageCode" = "8:{7AA2E2D0-51BC-4C4E-9700-7A6BDAD1B42E}"
+        "PackageCode" = "8:{1E7B9512-36A5-49D5-B070-47B9A1FCE481}"
         "UpgradeCode" = "8:{4F18AF3B-69B9-4A12-9AD2-5D97D95EFF41}"
         "AspNetVersion" = "8:2.0.50727.0"
         "RestartWWWService" = "11:FALSE"
@@ -178,7 +256,7 @@
         "Manufacturer" = "8:Thry"
         "ARPHELPTELEPHONE" = "8:"
         "ARPHELPLINK" = "8:"
-        "Title" = "8:UdonMidiPersistenceSetup"
+        "Title" = "8:VRChatMidiPersistenceSetup"
         "Subject" = "8:"
         "ARPCONTACT" = "8:Thryrallo"
         "Keywords" = "8:"
@@ -287,29 +365,29 @@
         }
         "Shortcut"
         {
-            "{970C0BB2-C7D0-45D7-ABFA-7EC378858BC0}:_6091C1353B59418B8003EB2C19A667C3"
+            "{970C0BB2-C7D0-45D7-ABFA-7EC378858BC0}:_2E856CE644134FEB90529189356A5D68"
             {
-            "Name" = "8:Udon Midi Persistence"
+            "Name" = "8:VRChat Midi Persistence"
             "Arguments" = "8:"
             "Description" = "8:"
             "ShowCmd" = "3:1"
             "IconIndex" = "3:0"
             "Transitive" = "11:FALSE"
-            "Target" = "8:_C93FDAB0E33B4B8E80E8FA9F08A18BA6"
+            "Target" = "8:_FB42D2A708A3402095333C585BF3DAF5"
             "Folder" = "8:_A88E517725D04FD1B9B45B3E2F33FD9C"
             "WorkingFolder" = "8:_A8477C6EE2124440BBCC3C395A9E3C4B"
             "Icon" = "8:_13E973D075FF4B42BB362FA48078E6A2"
             "Feature" = "8:"
             }
-            "{970C0BB2-C7D0-45D7-ABFA-7EC378858BC0}:_DE8A945B61B24DD797E2D3FFC99D0CA8"
+            "{970C0BB2-C7D0-45D7-ABFA-7EC378858BC0}:_598D7AFB7B114F5EB812CF180BE8AF96"
             {
-            "Name" = "8:Udon Midi Persistence"
+            "Name" = "8:VRChat Midi Persistence"
             "Arguments" = "8:"
             "Description" = "8:"
             "ShowCmd" = "3:1"
             "IconIndex" = "3:0"
             "Transitive" = "11:FALSE"
-            "Target" = "8:_C93FDAB0E33B4B8E80E8FA9F08A18BA6"
+            "Target" = "8:_FB42D2A708A3402095333C585BF3DAF5"
             "Folder" = "8:_985476EB85864956A33453D1CFD41470"
             "WorkingFolder" = "8:_A8477C6EE2124440BBCC3C395A9E3C4B"
             "Icon" = "8:_13E973D075FF4B42BB362FA48078E6A2"
@@ -714,34 +792,6 @@
         }
         "ProjectOutput"
         {
-            "{5259A561-127C-4D43-A0A1-72F10C7B3BF8}:_C93FDAB0E33B4B8E80E8FA9F08A18BA6"
-            {
-            "SourcePath" = "8:..\\UdonMidiPersistence\\obj\\Release\\net6.0-windows\\apphost.exe"
-            "TargetName" = "8:"
-            "Tag" = "8:"
-            "Folder" = "8:_A8477C6EE2124440BBCC3C395A9E3C4B"
-            "Condition" = "8:"
-            "Transitive" = "11:FALSE"
-            "Vital" = "11:TRUE"
-            "ReadOnly" = "11:FALSE"
-            "Hidden" = "11:FALSE"
-            "System" = "11:FALSE"
-            "Permanent" = "11:FALSE"
-            "SharedLegacy" = "11:FALSE"
-            "PackageAs" = "3:1"
-            "Register" = "3:1"
-            "Exclude" = "11:FALSE"
-            "IsDependency" = "11:FALSE"
-            "IsolateTo" = "8:"
-            "ProjectOutputGroupRegister" = "3:1"
-            "OutputConfiguration" = "8:Release|Any CPU"
-            "OutputGroupCanonicalName" = "8:PublishItems"
-            "OutputProjectGuid" = "8:{5DC2C4FE-78DA-4FC0-85D5-0DCE88329179}"
-            "ShowKeyOutput" = "11:TRUE"
-                "ExcludeFilters"
-                {
-                }
-            }
         }
     }
 }

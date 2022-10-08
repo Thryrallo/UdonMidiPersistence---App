@@ -1,23 +1,24 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\Thry 2 electric boog\\source\\repos\\UdonMidiPersistence\\UdonMidiPersistence\\UdonMidiPersistence.csproj": {}
+    "D:\\Entwicklung\\VRC\\UdonMidiPersistence---App\\UdonMidiPersistence\\UdonMidiPersistence.csproj": {}
   },
   "projects": {
-    "C:\\Users\\Thry 2 electric boog\\source\\repos\\UdonMidiPersistence\\UdonMidiPersistence\\UdonMidiPersistence.csproj": {
+    "D:\\Entwicklung\\VRC\\UdonMidiPersistence---App\\UdonMidiPersistence\\UdonMidiPersistence.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\Thry 2 electric boog\\source\\repos\\UdonMidiPersistence\\UdonMidiPersistence\\UdonMidiPersistence.csproj",
+        "projectUniqueName": "D:\\Entwicklung\\VRC\\UdonMidiPersistence---App\\UdonMidiPersistence\\UdonMidiPersistence.csproj",
         "projectName": "UdonMidiPersistence",
-        "projectPath": "C:\\Users\\Thry 2 electric boog\\source\\repos\\UdonMidiPersistence\\UdonMidiPersistence\\UdonMidiPersistence.csproj",
-        "packagesPath": "C:\\Users\\Thry 2 electric boog\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\Thry 2 electric boog\\source\\repos\\UdonMidiPersistence\\UdonMidiPersistence\\obj\\",
+        "projectPath": "D:\\Entwicklung\\VRC\\UdonMidiPersistence---App\\UdonMidiPersistence\\UdonMidiPersistence.csproj",
+        "packagesPath": "C:\\Users\\yanni\\.nuget\\packages\\",
+        "outputPath": "D:\\Entwicklung\\VRC\\UdonMidiPersistence---App\\UdonMidiPersistence\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
-          "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
+          "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages",
+          "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
         ],
         "configFilePaths": [
-          "C:\\Users\\Thry 2 electric boog\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Users\\yanni\\AppData\\Roaming\\NuGet\\NuGet.Config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],

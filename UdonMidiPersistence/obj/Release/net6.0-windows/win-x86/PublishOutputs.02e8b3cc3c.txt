@@ -1,0 +1,3 @@
+D:\Entwicklung\VRC\UdonMidiPersistence---App\UdonMidiPersistence\publish\win-x86\UdonMidiPersistence.pdb
+D:\Entwicklung\VRC\UdonMidiPersistence---App\UdonMidiPersistence\publish\win-x86\check.png
+D:\Entwicklung\VRC\UdonMidiPersistence---App\UdonMidiPersistence\publish\win-x86\UdonMidiPersistence.exe

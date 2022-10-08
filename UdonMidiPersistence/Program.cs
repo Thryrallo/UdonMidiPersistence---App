@@ -21,12 +21,17 @@ namespace UdonMidiPersistence
 
     // Required virtual midi port
     // https://www.tobias-erichsen.de/software/loopmidi.html
+
+    // Requires .Net Runtime
+
     internal static class Program
     {
-        const string VERSION = "1.0.16";
+        const string VERSION = "1.0.0";
 
         static string LOCAL_LOW_FOLDER = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData).Replace("Roaming", "LocalLow");
+        static string LOCAL_FOLDER = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData).Replace("Roaming", "Local");
         static string VRCHAT_APP_DATA = LOCAL_LOW_FOLDER + "\\VRChat\\VRChat";
+        static string UNITY_EDITOR_LOG = LOCAL_FOLDER + "\\Unity\\Editor\\Editor.log";
         static string SAVE_FILE_PATH = VRCHAT_APP_DATA + "\\UMP.json";
         static string LOG_FILE_PATH = VRCHAT_APP_DATA + "\\UMP_Log.txt";
         static bool _hasSpecificLogPath = false;
@@ -63,8 +68,8 @@ namespace UdonMidiPersistence
             // Check if already running
             if (System.Diagnostics.Process.GetProcessesByName(System.IO.Path.GetFileNameWithoutExtension(System.Reflection.Assembly.GetEntryAssembly().Location)).Count() > 1)
             {
-                Console.WriteLine("Udon Midi Persistence v" + VERSION);
-                Console.WriteLine("Process is already running.");
+                Log("Udon Midi Persistence v" + VERSION);
+                Log("Process is already running.");
                 Thread.Sleep(3500);
                 return;
             }
@@ -73,13 +78,15 @@ namespace UdonMidiPersistence
             File.WriteAllText(LOG_FILE_PATH, "");
             using (new ConsoleCopy(LOG_FILE_PATH))
             {
-                Console.WriteLine("Udon Midi Persistence v" + VERSION);
+                Log("Udon Midi Persistence v" + VERSION);
                 string[] args = Environment.GetCommandLineArgs();
                 if (args.Length > 1)
                 {
                     _specificLogPath = args[1];
+                    if (_specificLogPath == "Unity")
+                        _specificLogPath = UNITY_EDITOR_LOG;
                     _hasSpecificLogPath = true;
-                    Console.WriteLine($"Custom Log Path: {_specificLogPath}");
+                    Log($"Custom Log Path: {_specificLogPath}");
                     _logStream = new StreamReader(new FileStream(_specificLogPath, FileMode.Open, FileAccess.Read, FileShare.ReadWrite), Encoding.UTF8);
                     ReadTillCurrentLine();
                 }
@@ -97,6 +104,7 @@ namespace UdonMidiPersistence
 
 
                 var contextMenu = new ContextMenuStrip();
+                contextMenu.Items.Add("Retransmit last", null, (s, e) => { if(string.IsNullOrEmpty(_lastRequest.id) == false)  HandleDataReqeust(_lastRequest); });
                 contextMenu.Items.Add("Show", null, (s, e) => { Visible = !Visible; SetConsoleWindowVisibility(Visible); });
                 CreateStartupToggleItem(contextMenu);
                 contextMenu.Items.Add("Exit", null, (s, e) => { _isRunning = false; Application.Exit(); });
@@ -131,9 +139,15 @@ namespace UdonMidiPersistence
             }
         }
 
+        static void Log(string message)
+        {
+            // append time to the beginning of the message with same charakter length
+            Console.WriteLine(DateTime.Now.ToString("HH:mm:ss.fff") + " - " + message);
+        }
+
         static void OnExit()
         {
-            Console.WriteLine("Clean Exit");
+            Log("Clean Exit");
             _isRunning = false;
             notifyIcon.Visible = false;
             notifyIcon.Dispose();
@@ -155,6 +169,7 @@ namespace UdonMidiPersistence
 
         struct RequestData
         {
+            public string reqId;
             public string id;
             public string dictionaryId;
         }
@@ -189,6 +204,8 @@ namespace UdonMidiPersistence
         static string _currentWorldId;
         static IMidiOutput _midiOutput;
 
+        static RequestData _lastRequest;
+
         static void MainLoop()
         {
             var access = MidiAccessManager.Default;
@@ -196,10 +213,10 @@ namespace UdonMidiPersistence
             while(access.Outputs.Last().Name.Contains("loopMIDI") == false)
             {
                 SetConsoleWindowVisibility(true);
-                Console.WriteLine("");
-                Console.WriteLine("You need to install & run loopMIDI before using MidiPersistence!");
-                Console.WriteLine("Press 'Enter' to open loopMIDI donwload website.");
-                Console.WriteLine("Press 'Spacebar' to try finding loopMIDI again.");
+                Log("");
+                Log("You need to install & run loopMIDI before using MidiPersistence!");
+                Log("Press 'Enter' to open loopMIDI donwload website.");
+                Log("Press 'Spacebar' to try finding loopMIDI again.");
                 ConsoleKeyInfo key;
                 do
                 {
@@ -207,7 +224,7 @@ namespace UdonMidiPersistence
                     if (key.Key == ConsoleKey.Enter)
                         OpenUrl("https://www.tobias-erichsen.de/software/loopmidi.html");
                 } while (key.Key != ConsoleKey.Spacebar);
-                Console.WriteLine("");
+                Log("");
             }
             _midiOutput = access.OpenOutputAsync(access.Outputs.Last().Id).Result;
 
@@ -215,7 +232,7 @@ namespace UdonMidiPersistence
             long lastLogUpdate = 0;
             while (_isRunning) 
             {
-                //Console.WriteLine("Main Loop");
+                //Debug("Main Loop");
                 Thread.Sleep(100);
                 // Check for most recent VRC Log file
                 if (!_hasSpecificLogPath)
@@ -225,7 +242,7 @@ namespace UdonMidiPersistence
                         if (!Directory.Exists(VRCHAT_APP_DATA))
                         {
                             SetConsoleWindowVisibility(true);
-                            Console.WriteLine("VRChat Logs folder cannot be found under '" + VRCHAT_APP_DATA + "'");
+                            Log("VRChat Logs folder cannot be found under '" + VRCHAT_APP_DATA + "'");
                             Thread.Sleep(10000);
                         }
                         else
@@ -238,7 +255,7 @@ namespace UdonMidiPersistence
                                 if(currentPath != files[0].FullName)
                                 {
                                     currentPath = files[0].FullName;
-                                    Console.WriteLine("Opening Log: " + currentPath);
+                                    Log("Opening Log: " + currentPath);
                                     if (_logStream != null)
                                         _logStream.Close();
                                     _logStream = new StreamReader(new FileStream(currentPath, FileMode.Open, FileAccess.Read, FileShare.ReadWrite), Encoding.UTF8);
@@ -247,7 +264,7 @@ namespace UdonMidiPersistence
                             }
                             else
                             {
-                                Console.WriteLine("No Logs can be found in directory '" + VRCHAT_APP_DATA + "'. Waiting...");
+                                Log("No Logs can be found in directory '" + VRCHAT_APP_DATA + "'. Waiting...");
                                 Thread.Sleep(20000);
                             }
                         }
@@ -258,21 +275,54 @@ namespace UdonMidiPersistence
                 string line;
                 while((line = _logStream.ReadLine()) != null)
                 {
-                    //Console.WriteLine(line);
+                    //Debug(line);
                     if(line.Contains("[UdonMidiPersistence][Request]", StringComparison.Ordinal))
                     {
-                        string json = line.Split("[UdonMidiPersistence][Request]")[1];
-                        RequestData request = JsonConvert.DeserializeObject<RequestData>(json);
-                        Console.WriteLine($"[Request] {request.id}");
-                        HandleDataReqeust(request);
+                        try
+                        {
+                            string json = line.Split("[UdonMidiPersistence][Request]")[1];
+                            RequestData request = JsonConvert.DeserializeObject<RequestData>(json);
+                            Log($"[Request] {request.id}");
+                            HandleDataReqeust(request);
+                        }catch(Newtonsoft.Json.JsonReaderException e)
+                        {
+                            Log("[Exception][Request] " + e.Message);
+                        }
                     }
 
                     if (line.Contains("[UdonMidiPersistence][Save]", StringComparison.Ordinal))
                     {
-                        string json = line.Split("[UdonMidiPersistence][Save]")[1];
-                        SaveData save = JsonConvert.DeserializeObject<SaveData>(json);
-                        Console.WriteLine($"[Save] {save.id} => {save.value}");
-                        Save(save);
+                        try
+                        {
+                            string json = line.Split("[UdonMidiPersistence][Save]")[1];
+                            SaveData save = JsonConvert.DeserializeObject<SaveData>(json);
+                            Log($"[Save] {save.id} => {save.value}");
+                            Save(save);
+                        }
+                        catch (Newtonsoft.Json.JsonReaderException e)
+                        {
+                            Log("[Exception][Save] " + e.Message);
+                        }
+                    }
+
+                    if (line.Contains("[UdonMidiPersistence][Sleep]", StringComparison.Ordinal))
+                    {
+                        string data = line.Split("[UdonMidiPersistence][Sleep]")[1];
+                        if (float.TryParse(data, out float amount))
+                        {
+                            int ms = (int)(Math.Min(amount,10) * 1000); // Sleep maximum 10 seconds
+                            if (ms > 0)
+                            {
+                                Log($"[Sleeping] {ms}ms");
+                                Thread.Sleep(ms);
+                            }
+                        }
+                    }
+                    
+                    if (line.Contains("[UdonMidiPersistence][Start]", StringComparison.Ordinal))
+                    {
+                        // Wait for a second before sending any data to increase reliability
+                        Thread.Sleep(1);
                     }
                 }
             }
@@ -283,17 +333,18 @@ namespace UdonMidiPersistence
             if (_savedValuesMap.ContainsKey(request.dictionaryId) && _savedValuesMap[request.dictionaryId].ContainsKey(request.id))
             {
                 object value = _savedValuesMap[request.dictionaryId][request.id];
-                Console.WriteLine($"[Send] {request.id} => {value}");
-                if (value.GetType() == typeof(int)) SendInt(request.id, (int)value);
-                if (value.GetType() == typeof(float)) SendFloat(request.id, (float)value);
-                if (value.GetType() == typeof(string)) SendString(request.id, (string)value);
-                if (value.GetType() == typeof(Vector3)) SendVector3(request.id, (Vector3)value);
+                Log($"[Send] {request.id} => {value}");
+                if (value.GetType() == typeof(int)) SendInt(request.reqId, (int)value);
+                if (value.GetType() == typeof(float)) SendFloat(request.reqId, (float)value);
+                if (value.GetType() == typeof(string)) SendString(request.reqId, (string)value);
+                if (value.GetType() == typeof(Vector3)) SendVector3(request.reqId, (Vector3)value);
             }
             else
             {
-                Console.WriteLine($"[Send] {request.id} => NONE");
+                Log($"[Send] {request.id} => NONE");
                 SendDataMessage(request.id, typeof(object), new byte[0]);
             }
+            _lastRequest = request;
         }
 
         static void SendInt(string id, int value)
@@ -371,16 +422,29 @@ namespace UdonMidiPersistence
                 bits[i * 8 + 2] = (bytes[i] & 32) == 32;
                 bits[i * 8 + 1] = (bytes[i] & 64) == 64;
                 bits[i * 8 + 0] = (bytes[i] & 128) == 128;
-                //Console.WriteLine(bytes[i]);
+                //Debug(bytes[i]);
             }
+            int notes = 0;
             // iterate bits array with 14 bit jumps
-            for(int i = 0; i < bits.Length; i += 14)
+            double timestamp = (double)DateTime.Now.Ticks / TimeSpan.TicksPerMillisecond;
+
+            long startTicks = DateTime.Now.Ticks;
+            long ticksPerMidi = TimeSpan.TicksPerMillisecond / 2;
+            for (int i = 0; i < bits.Length; i += 14)
             {
                 byte b1 = BoolArrayToByte(bits, i, 7);
                 byte b2 = BoolArrayToByte(bits, i+7, 7);
-                //Console.WriteLine(b1 + " , " + b2);
+                //Debug(b1 + " , " + b2);
                 SendMidi(MidiEvent.NoteOn, 0, b1, b2);
+                notes++;
+                // wait so vrchat doesn't get overloaded
+                while (DateTime.Now.Ticks - startTicks < ticksPerMidi * notes)
+                {
+                    // Reason i don't use Thread.Sleep() is because it can sleep for a minimum of 1 millisecond, which is too long
+                }
             }
+            Log($"Sent {notes} notes in {(int)((double)DateTime.Now.Ticks / TimeSpan.TicksPerMillisecond - timestamp)}ms");
+            //Debug($"Sent {notes} notes");
         }
 
         static void SendMidi(byte type, int channel, int number, int value)
@@ -392,7 +456,7 @@ namespace UdonMidiPersistence
         {
             if(data.dictionaryId == null)
             {
-                Console.WriteLine("[Error][Save] dictionaryId is null! This should never happen!");
+                Log("[Error][Save] dictionaryId is null! This should never happen!");
                 return;
             }
             if (!_savedValuesMap.ContainsKey(data.dictionaryId))
@@ -403,7 +467,7 @@ namespace UdonMidiPersistence
             else if(data.type == "UnityEngine.Vector3") value = ConvertToVector3((string)value);
             else if (data.type != "System.String")
             {
-                Console.WriteLine($"[Error][Save] Type {data.type} is not supported.");
+                Log($"[Error][Save] Type {data.type} is not supported.");
                 return;
             }
             _savedValuesMap[data.dictionaryId][data.id] = value;
@@ -417,7 +481,7 @@ namespace UdonMidiPersistence
         {
             if(worldId != _currentWorldId)
             {
-                Console.WriteLine("New World ID");
+                Log("New World ID");
                 _currentWorldId = worldId;
             }
         }
@@ -437,14 +501,15 @@ namespace UdonMidiPersistence
             pro.StartInfo.UseShellExecute = true;
             pro.Start();
         }
-
+        
         static void CreateStartupToggleItem(ContextMenuStrip menu)
         {
-            _toggleStartupItem = new ToolStripMenuItem((_runOnStartup ? "✓" : "✖") + "Autorun on startup", null, (s, e) =>
+            Image checkmark = Image.FromFile("./check.png");
+            _toggleStartupItem = new ToolStripMenuItem("Autorun on startup", _runOnStartup ? checkmark : null, (s, e) =>
             {
                 _runOnStartup = !_runOnStartup;
                 SetStartup(_runOnStartup);
-                _toggleStartupItem.Text = (_runOnStartup ? "✓" : "✖") + "Autorun on startup";
+                _toggleStartupItem.Image = (_runOnStartup ? checkmark : null);
             });
             menu.Items.Add(_toggleStartupItem);
         }

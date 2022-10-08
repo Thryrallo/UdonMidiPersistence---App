@@ -1,11 +1,11 @@
 {
   "version": 2,
-  "dgSpecHash": "D4EKe/Enep+cFD7IiXGkLibwmEdQdqMpHsKP5w1OM4uUC8+Gwt5l9fFfmTKgQG2l5UpbPLjnF+jphS++sbWgvA==",
+  "dgSpecHash": "+eGTStXtt0KEHn2vT8LG/J+66X2VvRlhUalUesomjxECm2uiwx729XDGqg3Otq1t4j0Dph5vANcfp8Lkgg6pOQ==",
   "success": true,
-  "projectFilePath": "C:\\Users\\Thry 2 electric boog\\source\\repos\\UdonMidiPersistence\\UdonMidiPersistence\\UdonMidiPersistence.csproj",
+  "projectFilePath": "D:\\Entwicklung\\VRC\\UdonMidiPersistence---App\\UdonMidiPersistence\\UdonMidiPersistence.csproj",
   "expectedPackageFiles": [
-    "C:\\Users\\Thry 2 electric boog\\.nuget\\packages\\managed-midi\\1.9.14\\managed-midi.1.9.14.nupkg.sha512",
-    "C:\\Users\\Thry 2 electric boog\\.nuget\\packages\\newtonsoft.json\\13.0.1\\newtonsoft.json.13.0.1.nupkg.sha512"
+    "C:\\Users\\yanni\\.nuget\\packages\\managed-midi\\1.9.14\\managed-midi.1.9.14.nupkg.sha512",
+    "C:\\Users\\yanni\\.nuget\\packages\\newtonsoft.json\\13.0.1\\newtonsoft.json.13.0.1.nupkg.sha512"
   ],
   "logs": []
 }

@@ -333,16 +333,20 @@ namespace UdonMidiPersistence
             if (_savedValuesMap.ContainsKey(request.dictionaryId) && _savedValuesMap[request.dictionaryId].ContainsKey(request.id))
             {
                 object value = _savedValuesMap[request.dictionaryId][request.id];
-                Log($"[Send] {request.id} => {value}");
+                string valueString = value.ToString();
+                if (value.GetType() == typeof(float[]))
+                    valueString = "[" + string.Join(", ", (value as float[]).Select(f => f.ToString("F2"))) + "]";
+                Log($"[Send] {request.id},{request.reqId} => {value}");
                 if (value.GetType() == typeof(int)) SendInt(request.reqId, (int)value);
                 if (value.GetType() == typeof(float)) SendFloat(request.reqId, (float)value);
                 if (value.GetType() == typeof(string)) SendString(request.reqId, (string)value);
                 if (value.GetType() == typeof(Vector3)) SendVector3(request.reqId, (Vector3)value);
+                if (value.GetType() == typeof(float[])) SendFloatArray(request.reqId, (float[])value);
             }
             else
             {
-                Log($"[Send] {request.id} => NONE");
-                SendDataMessage(request.id, typeof(object), new byte[0]);
+                Log($"[Send] {request.reqId} => NONE");
+                SendDataMessage(request.reqId, typeof(object), new byte[0]);
             }
             _lastRequest = request;
         }
@@ -362,6 +366,11 @@ namespace UdonMidiPersistence
             SendDataMessage(id, typeof(string), Encoding.UTF8.GetBytes(value));
         }
 
+        static void SendFloatArray(string id, float[] value)
+        {
+            SendDataMessage(id, typeof(float[]), value.SelectMany(BitConverter.GetBytes).ToArray());
+        }
+
         static void SendVector3(string id, Vector3 value)
         {
             byte[] data = new byte[12];
@@ -373,19 +382,21 @@ namespace UdonMidiPersistence
 
         static void SendDataMessage(string id, Type type, byte[] value)
         {
-            int valueLength = value.Length + (type == typeof(string) ? 2 : 0);
+            bool appendValueLength = type == typeof(string) || type == typeof(float[]);
+            int valueLength = value.Length + (appendValueLength ? 2 : 0);
             byte typeValue = 0;
             if (type == typeof(int)) typeValue = 1;
             if (type == typeof(float)) typeValue = 2;
             if (type == typeof(string)) typeValue = 3;
             if (type == typeof(Vector3)) typeValue = 4;
+            if (type == typeof(float[])) typeValue = 5;
             byte[] data = new byte[2 + 2 + id.Length + valueLength];
             data[0] = (byte)(data.Length >> 8);
             data[1] = (byte)(data.Length & 0xFF);
             data[2] = (byte)(id.Length);
             data[3] = (byte)(typeValue);
             Array.Copy(Encoding.UTF8.GetBytes(id), 0, data, 4, id.Length);
-            if (type == typeof(string))
+            if (appendValueLength)
             {
                 data[4 + id.Length] = (byte)(value.Length >> 8);
                 data[5 + id.Length] = (byte)(value.Length & 0xFF);
@@ -459,22 +470,29 @@ namespace UdonMidiPersistence
                 Log("[Error][Save] dictionaryId is null! This should never happen!");
                 return;
             }
-            if (!_savedValuesMap.ContainsKey(data.dictionaryId))
-                _savedValuesMap.Add(data.dictionaryId, new Dictionary<string, object>());
-            object value = data.value;
-            if (data.type == "System.Int32") value = Convert.ToInt32(value);
-            else if(data.type == "System.Single") value = Convert.ToSingle(value);
-            else if(data.type == "UnityEngine.Vector3") value = ConvertToVector3((string)value);
-            else if (data.type != "System.String")
+            try
             {
-                Log($"[Error][Save] Type {data.type} is not supported.");
-                return;
+                if (!_savedValuesMap.ContainsKey(data.dictionaryId))
+                    _savedValuesMap.Add(data.dictionaryId, new Dictionary<string, object>());
+                object value = data.value;
+                if (data.type == "System.Int32") value = Convert.ToInt32(value);
+                else if (data.type == "System.Single") value = Convert.ToSingle(value);
+                else if (data.type == "UnityEngine.Vector3") value = ConvertToVector3((string)value);
+                else if (data.type == "System.Single[]") value = (value as Newtonsoft.Json.Linq.JArray).ToObject<float[]>();
+                else if (data.type != "System.String")
+                {
+                    Log($"[Error][Save] Type {data.type} is not supported.");
+                    return;
+                }
+                _savedValuesMap[data.dictionaryId][data.id] = value;
+                File.WriteAllText(SAVE_FILE_PATH, JsonConvert.SerializeObject(_savedValuesMap, Formatting.Indented, new JsonSerializerSettings
+                {
+                    TypeNameHandling = TypeNameHandling.All
+                }));
+            }catch(Exception e)
+            {
+                Log("[Exception][Save]c: " + e.Message);
             }
-            _savedValuesMap[data.dictionaryId][data.id] = value;
-            File.WriteAllText(SAVE_FILE_PATH, JsonConvert.SerializeObject(_savedValuesMap, Formatting.Indented, new JsonSerializerSettings
-            {
-                TypeNameHandling = TypeNameHandling.All
-            }));
         }
 
         static void AnnounceNewWorld(string worldId)
